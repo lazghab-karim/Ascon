@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Dashboard</title>
+  <style>
+    /* Body & Layout */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6C63FF, #FF6584);
+      color: #333;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    h3 {
+      margin-top: 40px;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Buttons */
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.2s all;
+      color: #fff;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    /* Specific Button Colors */
+    button:nth-of-type(1) { background-color: #28a745; } /* LED ON */
+    button:nth-of-type(2) { background-color: #dc3545; } /* LED OFF */
+    button:nth-of-type(3) { background-color: #6c757d; } /* Logout */
+
+    /* Sensor Value */
+    #val {
+      margin-top: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 10px;
+      min-width: 100px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>ESP32 Control Panel</h1>
+
+  <button onclick="cmd('ON')">LED ON</button>
+  <button onclick="cmd('OFF')">LED OFF</button>
+  <br><br>
+  <button onclick="location.href='/logout'">Logout</button>
+
+  <h3>Sensor Value</h3>
+  <p id="val">---</p>
+
+<script>
+// Function to POST "ON" or "OFF" to ESP32
+function cmd(state){
+  fetch("/led", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "state=" + state
+  })
+  .then(r => r.text())
+  .then(res => console.log("ESP32 response:", res));
+}
+
+// Fetch sensor value once on page load
+fetch("/value")
+  .then(r => r.json())
+  .then(d => val.innerText = d.value);
+</script>
+</body>
+</html>
