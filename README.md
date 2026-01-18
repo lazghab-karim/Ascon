@@ -20,3 +20,9 @@ The system includes:
 - ⚡ **Lightweight & efficient**: Optimized for resource-constrained ESP32 devices.
 
 ---
+
+## Site
+![alt text](images/site.png)
+
+## ESP32
+![alt text](images/setup.png)
